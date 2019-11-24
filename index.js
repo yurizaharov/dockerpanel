@@ -1,25 +1,26 @@
-const http = require('http');
-const port = 3000;
+const Koa = require('koa');
+const app = new Koa();
+const router = require('./router');
 
-const requestHandler = (request, response) => {
-    console.log(request.url);
-    response.end('Hello Node.js Server!');
-};
+const PORT = process.env.PORT || 8085;
+const ADDRCONFIG = process.env.ADDRCONFIG || '0.0.0.0';
 
-const server = http.createServer(requestHandler);
+// logger
+app.use(async (ctx, next) => {
+  await next();
+  const rt = ctx.response.get('X-Response-Time');
+  console.log(`${new Date()} - ${ctx.method} ${ctx.url} - ${rt}`);
+});
 
-server.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
+// x-response-time
+app.use(async (ctx, next) => {
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  ctx.set('X-Response-Time', `${ms}ms`);
+});
 
-    console.log(`server is listening on ${port}`)
-})
+// response
+app.use(router.routes());
 
-import Vue from 'vue'
-import App from './App.vue'
-
-new Vue({
-    el: '#app',
-    render: h => h(App)
-})
+app.listen(PORT, ADDRCONFIG, () => console.log(`server is live @${ADDRCONFIG}:${PORT}`));
