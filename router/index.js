@@ -8,10 +8,6 @@ const router = new Router();
 const koaBody = convert(KoaBody());
 
 router
-    .get('/', (ctx) => {
-        ctx.body = 'Root path';
-    })
-
     .get('/ping', (ctx) => {
         ctx.body = 'Dockerpanel';
     })

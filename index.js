@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const cors = require('@koa/cors');
+const serve = require('koa-static-server')
 
 const app = new Koa();
 const router = require('./router');
@@ -27,5 +28,8 @@ app.use(cors());
 
 // response
 app.use(router.routes());
+
+// serving directory
+app.use(serve({rootDir: 'frontend', rootPath: '/'}))
 
 app.listen(PORT, ADDRCONFIG, () => console.log(`server is live @${ADDRCONFIG}:${PORT}`));
