@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const Docker = require('dockerode');
-const KoaBody = require ('koa-body');
-const convert = require ('koa-convert');
+const KoaBody = require('koa-body');
+const convert = require('koa-convert');
 
 const docker = new Docker({socketPath: '/var/run/docker.sock'});
 const router = new Router();
@@ -13,7 +13,7 @@ router
     })
 
     .get('/ping', (ctx) => {
-        ctx.body = 'Ping response';
+        ctx.body = 'Dockerpanel';
     })
 
     .get('/docker', async ctx => {

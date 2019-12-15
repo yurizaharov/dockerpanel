@@ -9,11 +9,12 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@koa/cors": "^3.0.0",
     "dockerode": "^3.0.2",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
+    "koa-convert": "^1.2.0",
     "koa-router": "^7.4.0",
-    "vue": "^2.6.10",
-    "koa-convert": "latest"
+    "vue": "^2.6.10"
   }
 }

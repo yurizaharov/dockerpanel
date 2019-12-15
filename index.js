@@ -1,4 +1,6 @@
 const Koa = require('koa');
+const cors = require('@koa/cors');
+
 const app = new Koa();
 const router = require('./router');
 
@@ -19,6 +21,9 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
 });
+
+// cross-domain requests
+app.use(cors());
 
 // response
 app.use(router.routes());
