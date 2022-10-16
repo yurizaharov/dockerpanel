@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon index.js",
     "start": "node index.js"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "koa-convert": "^1.2.0",
     "koa-router": "^7.4.0",
     "koa-static-server": "^1.4.0",
+    "nodemon": "^2.0.4",
     "vue": "^2.6.10"
   }
 }

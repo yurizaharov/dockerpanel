@@ -1,20 +1,21 @@
 <template>
   <table class="shadow" style="border-spacing: 7px; margin: auto;" id="app">
-    <tr v-for="container in dockerlist"
-        :key="container">
+    <tr v-for="service in servicesList"
+        :key="service">
       <td style="text-align:right;">
-        {{ container.Image }}
-      </td>
-      <td style="text-align:left;">
-        {{ container.Names[0].replace('/','') }}
-      </td>
-      <td style="text-align:left;">
-        <a :href="'//' + localip + ':' + container.Ports[0].PublicPort" target="_blank">
-          {{ localip }}:{{ container.Ports[0].PublicPort }}
+        <a :href="'//'" target="_blank">
+          {{ service.Spec.TaskTemplate.ContainerSpec.Labels["com.docker.stack.namespace"] }}
         </a>
       </td>
-      <td>
-        <button v-on:click="removeContainer(container.Id)">Удалить</button>
+      <td style="text-align:right;">
+        <p>{{ service.mess }}</p>
+        <input v-model="service.mess">
+      </td>
+      <td style="text-align:right;">
+        {{ service.Spec.TaskTemplate.ContainerSpec.Image }}
+      </td>
+      <td style="text-align:right;">
+        {{ reversedMessage }}
       </td>
     </tr>
   </table>
@@ -25,30 +26,48 @@ import axios from 'axios'
 
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
+      mess: [],
       dockerlist: [],
-      localip: '10.0.0.23',
+      servicesList: [],
       endpointList: 'http://localhost:8085/docker',
+      serviceList: 'http://localhost:8085/services',
       endpointRemove: 'http://localhost:8085/remove',
     }
   },
 
   created() {
-    this.getDockerList();
+    this.getServicesList();
+  },
+
+  computed: {
+
   },
 
   methods: {
     getDockerList() {
       axios.get(this.endpointList)
-        .then(response => {
-          this.dockerlist = response.data;
-        })
-        .catch(error => {
-          console.log('----- error -----');
-          console.log(error);
-        })
-      },
+              .then(response => {
+                this.dockerlist = response.data;
+              })
+              .catch(error => {
+                console.log('----- error -----');
+                console.log(error);
+              })
+    },
+    getServicesList() {
+      axios.get(this.serviceList)
+              .then(response => {
+                this.servicesList = response.data;
+                console.log(response.data);
+
+              })
+              .catch(error => {
+                console.log('----- error -----');
+                console.log(error);
+              })
+    },
     removeContainer(Id) {
       console.log(Id);
       axios.post(this.endpointRemove, { Id: Id })
@@ -59,6 +78,9 @@ export default {
           console.log('----- error -----');
           console.log(error);
         })
+    },
+    reversedMessage: function () {
+      return this.serviceList.split('').reverse().join('')
     }
     }
 }
@@ -69,7 +91,6 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
