@@ -17,7 +17,7 @@
     "koa-convert": "^1.2.0",
     "koa-router": "^7.4.0",
     "koa-static-server": "^1.4.0",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "vue": "^2.6.10"
   }
 }
